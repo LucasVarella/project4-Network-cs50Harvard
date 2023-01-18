@@ -1,10 +1,14 @@
+import json
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from datetime import datetime
+
+from .models import User, Post, Like
 
 
 def index(request):
@@ -61,3 +65,30 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+@login_required
+def new_post(request):
+    
+    # New post must be via POST
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    
+    data = json.loads(request.body)
+    
+    user_post = data.get("user")
+    content_post = data.get("content")
+    
+    post = Post(user= user_post, content= content_post, timestamp= datetime.now())
+    post.save()
+    
+@login_required
+def get_user(request):
+    
+     # New post must be via GET
+    if request.method == "POST":
+        return JsonResponse({"error": "GET request required."}, status=400)
+    
+    user = request.user
+    return JsonResponse({"user": str(user.username), "img_url": str(user.img_url), "biography": user.biography ,"qtd_followers": user.qtd_followers, "qtd_following": user.qtd_following}, status=200)
+    
+    

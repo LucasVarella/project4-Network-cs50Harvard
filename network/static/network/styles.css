@@ -1,0 +1,158 @@
+body{
+    /* background-image: url('imgs/mesh-995.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; */
+}
+
+/* SCROLL */
+/* Works on Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: white #033649;
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: #033649;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 20px;
+    border: 3px solid #033649;
+  }
+
+  
+textarea{
+    width: 100% !important;
+    height: 100px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: none;
+}
+
+.body{
+    padding: 5%;
+    height: 100vh;
+}
+
+#navbar-top{
+    background-color: #033649 !important;
+}
+ 
+#navbar-top ul li a{
+    color: white !important;
+}
+
+#app{
+    width: 100%;
+}
+
+#left{
+    min-width: 20%;
+    width: 20%;
+    height: 100vh;
+    /* From https://css.glass */
+    /* background: rgba(3, 54, 73, 0.43529411764705883);
+    border-radius: 16px 0px 0px 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px); */
+   
+    
+}
+
+#page{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    min-width: 60%;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.886);
+    opacity: 0;
+    animation-name: show;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+
+
+}
+
+
+#right{
+    min-width: 20%;
+    width: 20%;
+    height: 100vh;
+    /* From https://css.glass */
+    /* background: rgba(3, 54, 73, 0.43529411764705883);
+    border-radius: 0px 16px 16px 0px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px); */
+   
+}
+
+.post{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border-radius: 8px;
+    padding: 20px 40px;
+    min-width: 20%;
+    margin: 0px 8px;
+
+}
+
+#profile-logo{
+    min-width: 160px;
+    min-height: 160px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 50%;
+}
+
+#profile-logo img{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    
+}
+
+#profile-infos{
+    padding-left: 25px;
+}
+
+#post-logo{
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 50%;
+}
+
+#post-logo img{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@keyframes show{
+
+    0%{
+        opacity: 0;
+    }
+
+    100%{
+        opacity: 1;
+    }
+}

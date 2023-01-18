@@ -1,5 +1,16 @@
 {% extends "network/layout.html" %}
 
+{% block head %}
+    <script src= "https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script src= "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src= "https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src= "../../static/network/app.js" type="text/babel"></script>
+{% endblock %}
 {% block body %}
-    TODO
+    <div id="app" class="d-inline-flex p-2 flex-row justify-content-around align-items-center">
+        <div id="left"></div>
+        <div id="page"></div>
+        <div id="right"></div>
+    </div>
+    
 {% endblock %}
