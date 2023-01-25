@@ -3,10 +3,12 @@ from django.db import models
 
 
 class User(AbstractUser):
+    img_banner = models.URLField(blank=True)
     img_url = models.URLField(blank=True)
     biography = models.CharField(max_length=150, blank=True)
     qtd_followers = models.IntegerField(default=0)
     qtd_following = models.IntegerField(default=0)
+    posts_config = models.IntegerField(default=0)
     
     def count():
         pass
@@ -23,4 +25,4 @@ class Like(models.Model):
     
 class Follow(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=False)
-    #following = models.ForeignKey(User, on_delete=models.CASCADE, default=False)
+    following = models.IntegerField(blank= False)

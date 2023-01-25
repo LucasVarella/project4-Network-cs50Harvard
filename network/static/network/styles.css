@@ -3,6 +3,21 @@ body{
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center; */
+    font-family: 'Inter', sans-serif;
+}
+
+h2{
+    font-weight: bold;
+}
+
+.btn-outline-primary{
+    border-color: #033649;
+    color: #033649;
+}
+.btn-outline-primary:hover{
+    background-color: #033649;
+    border-color: #033649;
+    color: white;
 }
 
 /* SCROLL */
@@ -10,24 +25,23 @@ body{
 * {
     scrollbar-width: thin;
     scrollbar-color: white #033649;
-  }
-  
-  /* Works on Chrome, Edge, and Safari */
-  *::-webkit-scrollbar {
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
     width: 10px;
-  }
-  
-  *::-webkit-scrollbar-track {
+}
+
+*::-webkit-scrollbar-track {
     background: #033649;
-  }
-  
-  *::-webkit-scrollbar-thumb {
+}
+
+*::-webkit-scrollbar-thumb {
     background-color: white;
     border-radius: 20px;
     border: 3px solid #033649;
-  }
+}
 
-  
 textarea{
     width: 100% !important;
     height: 100px;
@@ -48,7 +62,7 @@ textarea{
 #navbar-top{
     background-color: #033649 !important;
 }
- 
+
 #navbar-top ul li a{
     color: white !important;
 }
@@ -67,8 +81,6 @@ textarea{
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px); */
-   
-    
 }
 
 #page{
@@ -77,17 +89,8 @@ textarea{
     width: 60%;
     min-width: 60%;
     height: 100vh;
-    background-color: rgba(255, 255, 255, 0.886);
-    opacity: 0;
-    animation-name: show;
-    animation-duration: 1s;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-    animation-play-state: paused;
-
 
 }
-
 
 #right{
     min-width: 20%;
@@ -99,24 +102,25 @@ textarea{
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px); */
-   
 }
 
-.post{
+.box{
+    
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    border-radius: 8px;
     padding: 20px 40px;
     min-width: 20%;
     margin: 0px 8px;
+    border-radius: 8px;
 
 }
 
 #profile-logo{
-    min-width: 160px;
-    min-height: 160px;
+    width: 120px;
+    height: 120px;
     overflow: hidden;
     position: relative;
     border-radius: 50%;
+    background-color: floralwhite;
 }
 
 #profile-logo img{
@@ -124,7 +128,6 @@ textarea{
     width: 100%;
     height: 100%;
     object-fit: cover;
-    
 }
 
 #profile-infos{
@@ -132,8 +135,8 @@ textarea{
 }
 
 #post-logo{
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     overflow: hidden;
     position: relative;
     border-radius: 50%;
@@ -146,13 +149,22 @@ textarea{
     object-fit: cover;
 }
 
-@keyframes show{
+#banner-profile{
+    width: 100% ;
+    height: 160px;
+    background-position: 0% 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 8px 8px 0px 0px;
+    background-color: #033649;
 
-    0%{
-        opacity: 0;
-    }
+    
+}
 
-    100%{
-        opacity: 1;
-    }
+#infos-profile{
+    margin-top: -80px;
+}
+
+#toggle-posts{
+    justify-content: right;
 }

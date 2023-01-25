@@ -1,0 +1,78 @@
+{% extends "network/layout.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<!----- DIV PROFILE ------> 
+<div id="profile" class="d-inline-flex flex-column justify-content-center align-items-center pt-4">
+
+    <!----- DIV HEADER PROFILE ------> 
+    <div id="banner-profile" class="box" style="background-image: url('{{user.img_banner}}');"> 
+    </div>
+    <div id="infos-profile" class="box w-100 d-inline-flex flex-column align-items-center">
+        <div id="profile-logo">
+            {% if user.img_url != "" %}
+                <img src={{user.img_url}}/>
+            {% else %}
+                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"/>
+            {% endif %}
+        </div>
+        <div class="">
+            <h2>{{user.username}}</h2>
+        </div>
+        
+        <div class="">  
+            <h6>Posts: {{user.qtd_following}} | Following: {{user.qtd_following}} | Followers: {{user.qtd_followers}}</h6>  
+        </div>
+
+        <div class="w-100 " style="text-align: center;">
+            {{user.biography}}
+        </div>
+        
+        <hr>
+
+        {% if user == request.user %}
+            <!----- DIV NEW POST ------> 
+            <div class="w-100">
+                <div class="post-content">
+                    <input hidden type="text" value={{csrf_token}} name="csrf_token" id="csrf_token">
+                    <textarea class="content-post" placeholder="Describe yourself here..."></textarea>
+                </div>
+                <div style="text-align: center;" class="pt-2">
+                    <button class="send-post btn btn-outline-primary">Send</button>
+                </div>
+            </div>
+        {% else %}
+            <div class="w-100">
+                <div style="text-align: center;" class="pt-2">
+                    <button class="btn btn-outline-primary">Follow</button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!----- PROFILE POSTS ------> 
+    {% for post in posts %}
+        <hr>
+        <div class="box w-100">
+            <div class="d-inline-flex p-2 flex-row align-items-center">
+                <div id="post-logo"><img src={{post.user.img_url}}/></div>
+                <span class="pl-3">{{post.user.username}}</span>
+            </div>
+            <div class="post-content">
+                {{post.content}}
+            </div>
+        </div>
+    {% endfor %}
+    <hr>
+        <div class="box w-100" style="background-color: #033649 ; color: white">
+            <div style="text-align: center;">
+                This is all!
+            </div> 
+        </div>
+    <hr>
+</div>
+    
+{% endblock %}

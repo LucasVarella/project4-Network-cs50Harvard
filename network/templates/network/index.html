@@ -1,16 +1,32 @@
 {% extends "network/layout.html" %}
 
 {% block head %}
-    <script src= "https://unpkg.com/react@16/umd/react.production.min.js"></script>
-    <script src= "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-    <script src= "https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
     <script src= "../../static/network/app.js" type="text/babel"></script>
 {% endblock %}
 {% block body %}
-    <div id="app" class="d-inline-flex p-2 flex-row justify-content-around align-items-center">
-        <div id="left"></div>
-        <div id="page"></div>
-        <div id="right"></div>
+
+    <div id="toggle-posts" class="d-inline-flex">
+        <button>Change</button>
     </div>
+    {% for post in posts %}
+    <hr>
+    <div class="box w-100 d-inline-flex p-2 flex-row align-items-center">
+        <div class="d-inline-flex p-2 flex-column align-items-center justify-content-center">
+            <div id="post-logo"><img src={{post.user.img_url}}/></div>
+            <span class="">{{post.user.username}}</span>
+        </div>
+        <div class="vr"></div>
+        <div class="post-content">
+            {{post.content}}
+        </div>
+    </div>
+{% endfor %}
+<hr>
+    <div class="box w-100" style="background-color: #033649 ; color: white">
+        <div style="text-align: center;">
+            This is all!
+        </div> 
+    </div>
+<hr>
     
 {% endblock %}

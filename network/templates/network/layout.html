@@ -3,9 +3,15 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{% block title %}Social Network{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet">
+        <script src="../../static/network/app.js"></script>
+        
         {% block head %}
         {% endblock %}
     </head>
@@ -16,17 +22,17 @@
           
             <div>
               <ul class="navbar-nav mr-auto">
-                {% if user.is_authenticated %}
+                {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a data-page="profile" class="nav-link" href="#"><strong>{{ user.username }}</strong></a>
+                        <a data-page="profile" class="nav-link" href="{% url 'myprofile' %}"><strong>{{ request.user.username }}</strong></a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                  <a data-page="foryou" class="nav-link" href="#">For you</a>
+                  <a data-page="foryou" class="nav-link" href="{% url 'foryou' %}">For you</a>
                 </li>
-                {% if user.is_authenticated %}
+                {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a data-page="following" class="nav-link" href="#">Following</a>
+                        <a data-page="following" class="nav-link" href="{% url 'following' %}">Following</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
@@ -44,8 +50,14 @@
         </nav>
         
         <div class="body">
-            {% block body %}
-            {% endblock %}
+            <div id="app" class="d-inline-flex p-2 flex-row justify-content-around align-items-center">
+                <div id="left"></div>
+                <div id="page">
+                    {% block body %}
+                    {% endblock %}
+                </div>
+                <div id="right"></div>
+            </div>
         </div>
     </body>
 </html>

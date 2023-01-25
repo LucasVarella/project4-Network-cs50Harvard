@@ -3,16 +3,23 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.urls import reverse
 
 from datetime import datetime
 
-from .models import User, Post, Like
+from .models import User, Post, Like, Follow
 
 
 def index(request):
-    return render(request, "network/index.html")
+    
+    if request.method == "GET":
+        user = request.user
+        if user.is_authenticated:
+            return HttpResponseRedirect(reverse("foryou"))
+        else:
+            return HttpResponseRedirect(reverse("login"))
 
 
 def login_view(request):
@@ -66,7 +73,65 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
+def my_profile(request):
+    
+    user = request.user
+    if user.is_authenticated:
+        my_posts = Post.objects.filter(user= user)
+        return render(request, "network/profile.html", {
+            "user": user, "posts": my_posts
+        })
+    else:
+        return HttpResponseRedirect(reverse("login"))
+
+
+def profile(request, user):
+    
+    user_profile = User.objects.get(username=user)
+    posts = Post.objects.filter(user= user_profile)
+    return render(request, "network/profile.html", {
+        "user": user_profile, "posts": posts
+    })
+
+def foryou(request):
+    config = request.user.posts_config
+    posts = Post.objects.all
+    
+    if config == 0:
+        return render(request, "network/index.html", {
+            "posts": posts
+        })
+        
+    else:
+        return render(request, "network/index.html", {
+            "posts": posts
+        })
+
+def following(request):
+    config = request.user.posts_config
+    follow_list = Follow.objects.filter(user= request.user)
+    following = []
+    posts = []
+    
+    for follow in follow_list:
+        user = User.objects.get(pk = follow.following)
+        posts_user = Post.objects.filter(user= user)
+        
+        for post in posts_user:
+            posts.append(post)
+    
+    if config == 0:
+        return render(request, "network/index.html", {
+            "posts": posts
+        })
+        
+    else:
+        return render(request, "network/index.html", {
+            "posts": posts
+        })
+
 @login_required
+@csrf_exempt
 def new_post(request):
     
     # New post must be via POST
@@ -75,16 +140,15 @@ def new_post(request):
     
     data = json.loads(request.body)
     
-    user_post = data.get("user")
     content_post = data.get("content")
     
-    post = Post(user= user_post, content= content_post, timestamp= datetime.now())
+    post = Post(user= request.user, content= content_post, timestamp= datetime.now())
     post.save()
     
 @login_required
 def get_user(request):
     
-     # New post must be via GET
+    # New post must be via GET
     if request.method == "POST":
         return JsonResponse({"error": "GET request required."}, status=400)
     
