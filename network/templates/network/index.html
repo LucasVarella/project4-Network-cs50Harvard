@@ -8,15 +8,29 @@
     <div id="toggle-posts" class="d-inline-flex">
         <button>Change</button>
     </div>
+
+    <button id="show-newpost-btn" class="btn btn-primary w-25">Add new post</button>
+
+    <div id="show-newpost" class="box mt-2" >
+            <div class="w-100">
+                <div class="post-content">
+                    <input hidden type="text" value={{csrf_token}} name="csrf_token" id="csrf_token">
+                    <textarea maxlength="320" class="content-post" placeholder="Describe yourself here..."></textarea>
+                </div>
+                <div style="text-align: right;" class="pt-2">
+                    <button class="send-post btn btn-outline-primary">Send</button>
+                </div>
+            </div>
+    </div>
+
     {% for post in posts %}
     <hr>
     <div class="box w-100 d-inline-flex p-2 flex-row align-items-center">
-        <div class="d-inline-flex p-2 flex-column align-items-center justify-content-center">
+        <div class="infos-post">
             <div id="post-logo"><img src={{post.user.img_url}}/></div>
             <span class="">{{post.user.username}}</span>
         </div>
-        <div class="vr"></div>
-        <div class="post-content">
+        <div class="post-content pl-3">
             {{post.content}}
         </div>
     </div>

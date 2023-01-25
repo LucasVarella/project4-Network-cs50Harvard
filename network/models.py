@@ -16,7 +16,7 @@ class User(AbstractUser):
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=False)
-    content = models.TextField(max_length=170)
+    content = models.TextField(max_length=320)
     timestamp = models.DateTimeField
     
 class Like(models.Model):
