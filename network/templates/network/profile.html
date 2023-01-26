@@ -1,6 +1,7 @@
 {% extends "network/layout.html" %}
 
 {% block head %}
+    <script src= "../../static/network/profile.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -23,8 +24,10 @@
             <h2>{{user.username}}</h2>
         </div>
         
-        <div class="">  
-            <h6>Posts: {{user.qtd_following}} | Following: {{user.qtd_following}} | Followers: {{user.qtd_followers}}</h6>  
+        <div class="d-inline-flex flex-row justify-content-center w-100" id="stats-profile">  
+            <h6>Posts: <span id="span-posts">{{user.qtd_followers}}</span></h6>
+            <h6>Following: <span id="span-following">{{user.qtd_following}}</span></h6>
+            <h6>Followers: <span id="span-followers">{{user.qtd_followers}}</span></h6>  
         </div>
 
         <div class="w-100 " style="text-align: center;">
@@ -47,7 +50,11 @@
         {% else %}
             <div class="w-100">
                 <div style="text-align: center;" class="pt-2">
-                    <button class="btn btn-outline-primary">Follow</button>
+                    {% if following != True %}
+                        <button data-id={{user.id}} id="follow-btn" class="btn btn-outline-primary">Follow</button>
+                    {% else %}
+                        <button data-id={{user.id}} id="follow-btn" class="btn btn-outline-danger">Unfollow</button>
+                    {% endif %}
                 </div>
             </div>
         {% endif %}

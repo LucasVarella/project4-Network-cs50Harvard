@@ -89,8 +89,15 @@ def profile(request, user):
     
     user_profile = User.objects.get(username=user)
     posts = Post.objects.filter(user= user_profile)
+    
+    following = True
+    try:
+        follow = Follow.objects.get(user = request.user, following= user_profile.id)
+    except:
+        following = False
+        
     return render(request, "network/profile.html", {
-        "user": user_profile, "posts": posts
+        "user": user_profile, "posts": posts, "following": following
     })
 
 def foryou(request):
@@ -107,28 +114,66 @@ def foryou(request):
             "posts": posts
         })
 
+@csrf_exempt
 def following(request):
-    config = request.user.posts_config
-    follow_list = Follow.objects.filter(user= request.user)
-    following = []
-    posts = []
     
-    for follow in follow_list:
-        user = User.objects.get(pk = follow.following)
-        posts_user = Post.objects.filter(user= user)
-        
-        for post in posts_user:
-            posts.append(post)
+    user = request.user
     
-    if config == 0:
-        return render(request, "network/index.html", {
-            "posts": posts
-        })
+    if user.is_authenticated:
         
+        if request.method == "POST":
+            
+            
+            
+            body_unicode = request.body.decode('utf-8')
+            body = json.loads(body_unicode)
+            id_profile = body['id_profile']
+            profile_user = User.objects.get(pk= id_profile)
+            
+            follow_status = True
+            try:
+                follow = Follow.objects.get(user= user, following= id_profile)
+            except:
+                follow_status = False
+                
+            if follow_status == True:
+                follow.delete()
+                profile_user.qtd_followers -=1
+                profile_user.save()
+                qtd_followers = profile_user.qtd_followers
+                return JsonResponse({"result": "Sucess unfollowed user", "qtd_followers": qtd_followers}, status=200)
+            else:        
+                add_follow = Follow(user= user, following=id_profile)
+                add_follow.save()
+                profile_user.qtd_followers +=1
+                profile_user.save()
+                qtd_followers = profile_user.qtd_followers
+                return JsonResponse({"result": "Sucess followed user", "qtd_followers": qtd_followers}, status=200)
+        
+        else:
+            config = request.user.posts_config
+            follow_list = Follow.objects.filter(user= request.user)
+            following = []
+            posts = []
+            
+            for follow in follow_list:
+                user = User.objects.get(pk = follow.following)
+                posts_user = Post.objects.filter(user= user)
+                
+                for post in posts_user:
+                    posts.append(post)
+            
+            if config == 0:
+                return render(request, "network/index.html", {
+                    "posts": posts
+                })
+                
+            else:
+                return render(request, "network/index.html", {
+                    "posts": posts
+                })
     else:
-        return render(request, "network/index.html", {
-            "posts": posts
-        })
+        return HttpResponseRedirect(reverse("login"))
 
 @login_required
 @csrf_exempt
