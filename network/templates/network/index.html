@@ -1,7 +1,7 @@
 {% extends "network/layout.html" %}
 
 {% block head %}
-    <script src= "../../static/network/index.js"></script>
+
 {% endblock %}
 {% block body %}
 
@@ -19,36 +19,39 @@
 
     <div id="show-newpost" class="box mt-2">
             <div class="w-100">
-                <div class="post-content">
-                    <input hidden type="text" value={{csrf_token}} name="csrf_token" id="csrf_token">
-                    <textarea maxlength="320" class="content-post" placeholder="Describe yourself here..."></textarea>
-                </div>
-                <div style="text-align: right;" class="pt-2">
-                    <button class="send-post btn btn-outline-primary">Send</button>
-                </div>
+                <form method="POST" action="">
+                    <div class="post-content">
+                        <input hidden type="text" value={{csrf_token}} name="csrf_token" id="csrf_token">
+                        <textarea maxlength="320" id="content-post" placeholder="Describe yourself here..." required></textarea>
+                    </div>
+                    <div style="text-align: right;" class="pt-2">
+                        <button id="send-post" class="btn btn-outline-primary">Send</button>
+                    </div>
+                </form>
             </div>
     </div>
 
-    {% for post in posts %}
-    <hr>
-    <div class="box w-100 d-inline-flex p-2 flex-row align-items-center">
-        <a href="/profile/{{post.user.username}}">
-            <div class="infos-post">
-                <div id="post-logo"><img src={{post.user.img_url}}/></div>
-                <span class="">{{post.user.username}}</span>
-            </div>
-        </a>
-        <div class="post-content pl-3">
-            {{post.content}}
+    <div id="allposts-div" class="d-inline-flex flex-column-reverse w-100">
+        <div class="box w-100" style="background-color: #033649 ; color: white">
+            <div style="text-align: center;">
+                This is all!
+            </div> 
         </div>
+        {% for post in posts %}
+            <hr>
+            <div class="box w-100 d-inline-flex p-2 flex-row align-items-center">
+                <a href="/profile/{{post.user.username}}">
+                    <div class="infos-post">
+                        <div id="post-logo"><img src={{post.user.img_url}}/></div>
+                        <span class="">{{post.user.username}}</span>
+                    </div>
+                </a>
+                <div class="post-content pl-3">
+                    {{post.content}}
+                </div>
+            </div>
+        {% endfor %}
+        <hr>
     </div>
-{% endfor %}
-<hr>
-    <div class="box w-100" style="background-color: #033649 ; color: white">
-        <div style="text-align: center;">
-            This is all!
-        </div> 
-    </div>
-<hr>
     
 {% endblock %}

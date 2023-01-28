@@ -89,6 +89,8 @@ def profile(request, user):
     
     user_profile = User.objects.get(username=user)
     posts = Post.objects.filter(user= user_profile)
+    qtd_posts = 0
+   
     
     following = True
     try:
@@ -97,7 +99,7 @@ def profile(request, user):
         following = False
         
     return render(request, "network/profile.html", {
-        "user": user_profile, "posts": posts, "following": following
+        "user": user_profile, "posts": posts, "following": following, "qtd_posts": qtd_posts
     })
 
 def foryou(request):
@@ -183,13 +185,17 @@ def new_post(request):
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
     
-    data = json.loads(request.body)
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    content = body['content']
+
     
-    content_post = data.get("content")
-    
-    post = Post(user= request.user, content= content_post, timestamp= datetime.now())
+    post = Post(user= request.user, content= content)
     post.save()
+    user = request.user
+    return JsonResponse({"result": "Posted with success!", "user": user.img_url}, status=200)
     
+            
 @login_required
 def get_user(request):
     

@@ -1,7 +1,7 @@
 {% extends "network/layout.html" %}
 
 {% block head %}
-    <script src= "../../static/network/profile.js"></script>
+
 {% endblock %}
 
 {% block body %}
@@ -25,7 +25,7 @@
         </div>
         
         <div class="d-inline-flex flex-row justify-content-center w-100" id="stats-profile">  
-            <h6>Posts: <span id="span-posts">{{user.qtd_followers}}</span></h6>
+            <h6>Posts: <span id="span-posts">{{qtd_posts}}</span></h6>
             <h6>Following: <span id="span-following">{{user.qtd_following}}</span></h6>
             <h6>Followers: <span id="span-followers">{{user.qtd_followers}}</span></h6>  
         </div>
@@ -39,13 +39,16 @@
         {% if user == request.user %}
             <!----- DIV NEW POST ------> 
             <div class="w-100">
-                <div class="post-content">
-                    <input hidden type="text" value={{csrf_token}} name="csrf_token" id="csrf_token">
-                    <textarea maxlength="320" class="content-post" placeholder="Describe yourself here..."></textarea>
-                </div>
-                <div style="text-align: center;" class="pt-2">
-                    <button class="send-post btn btn-outline-primary">Send</button>
-                </div>
+                <form method="POST" action="">
+                    <input hidden value="{{csrf_token}}">
+                    <div class="post-content">
+                        <input hidden type="text" value={{csrf_token}} name="csrf_token" id="csrf_token">
+                        <textarea maxlength="320" id="content-post" placeholder="Describe yourself here..." required></textarea>
+                    </div>
+                    <div style="text-align: center;" class="pt-2">
+                        <button id="send-post" class="btn btn-outline-primary">Send</button>
+                    </div>
+                </form>
             </div>
         {% else %}
             <div class="w-100">
@@ -61,25 +64,26 @@
     </div>
     
     <!----- PROFILE POSTS ------> 
-    {% for post in posts %}
-        <hr>
-        <div class="box w-100">
-            <div class="d-inline-flex p-2 flex-row align-items-center">
-                <div id="post-logo"><img src={{post.user.img_url}}/></div>
-                <span class="pl-3">{{post.user.username}}</span>
-            </div>
-            <div class="post-content">
-                {{post.content}}
-            </div>
-        </div>
-    {% endfor %}
-    <hr>
+    <div id="allposts-div" class="d-inline-flex flex-column-reverse w-100">
         <div class="box w-100" style="background-color: #033649 ; color: white">
             <div style="text-align: center;">
                 This is all!
             </div> 
         </div>
-    <hr>
+        {% for post in posts %}
+            <hr>
+            <div class="box w-100 d-inline-flex p-2 flex-row align-items-center">
+                <div class="infos-post">
+                    <div id="post-logo"><img src={{post.user.img_url}}/></div>
+                </div>
+                <div class="post-content pl-3">
+                    {{post.content}}
+                </div>
+            </div>
+        {% endfor %}
+        <hr>
+    </div>
+    
 </div>
     
 {% endblock %}
