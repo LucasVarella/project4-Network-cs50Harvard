@@ -103,18 +103,23 @@ def profile(request, user):
     })
 
 def foryou(request):
-    config = request.user.posts_config
-    posts = Post.objects.all
-    
-    if config == 0:
-        return render(request, "network/index.html", {
-            "posts": posts
-        })
+    if request.user.is_authenticated:
+        
+        config = request.user.posts_config
+        posts = Post.objects.all
+        
+        if config == 0:
+            return render(request, "network/index.html", {
+                "posts": posts
+            })
+            
+        else:
+            return render(request, "network/index.html", {
+                "posts": posts
+            })
         
     else:
-        return render(request, "network/index.html", {
-            "posts": posts
-        })
+        return HttpResponseRedirect(reverse("login"))
 
 @csrf_exempt
 def following(request):
@@ -193,7 +198,7 @@ def new_post(request):
     post = Post(user= request.user, content= content)
     post.save()
     user = request.user
-    return JsonResponse({"result": "Posted with success!", "user": user.img_url}, status=200)
+    return JsonResponse({"result": "Posted with success!", "user_img": user.img_url, "user_name": user.username}, status=200)
     
             
 @login_required

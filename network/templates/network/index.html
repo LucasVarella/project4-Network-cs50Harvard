@@ -39,15 +39,24 @@
         </div>
         {% for post in posts %}
             <hr>
-            <div class="box w-100 d-inline-flex p-2 flex-row align-items-center">
-                <a href="/profile/{{post.user.username}}">
-                    <div class="infos-post">
-                        <div id="post-logo"><img src={{post.user.img_url}}/></div>
-                        <span class="">{{post.user.username}}</span>
+                {% if request.user == post.user %}
+                    <div data-id={{post.id}} class="box w-100 d-inline-flex flex-column align-items-center">
+                        <div class="edit w-100">
+                            <i class="edit-icon material-icons material-symbols-outlined md-24">edit_note</i> 
+                        </div>
+                {% else %}
+                    <div class="box w-100 d-inline-flex flex-column align-items-center pt-32">
+                {% endif %}
+                <div class="w-100 d-inline-flex p-2 flex-row align-items-center">
+                    <a href="/profile/{{post.user.username}}">
+                        <div class="infos-post">
+                            <div id="post-logo"><img src={{post.user.img_url}}/></div>
+                            <span class="">{{post.user.username}}</span>
+                        </div>
+                    </a>
+                    <div class="w-100 post-content pl-3">
+                        {{post.content}}
                     </div>
-                </a>
-                <div class="post-content pl-3">
-                    {{post.content}}
                 </div>
             </div>
         {% endfor %}

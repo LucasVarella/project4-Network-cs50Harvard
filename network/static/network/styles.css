@@ -107,7 +107,7 @@ textarea{
 .box{
     
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    padding: 20px 40px;
+    padding: 8px 15px 32px 15px;
     min-width: 20%;
     border-radius: 8px;
 
@@ -162,6 +162,7 @@ textarea{
 
 #infos-profile{
     margin-top: -80px;
+    padding: 25px 40px !important;
 }
 
 #toggle-posts{
@@ -176,6 +177,7 @@ textarea{
     justify-content: center;
 }
 
+.material-icons.md-36 { font-size: 24px; }
 .material-icons.md-36 { font-size: 36px; }
 
 #show-newpost-btn{
@@ -192,4 +194,20 @@ textarea{
 
 #stats-profile h6{
     padding: 5px 15px;
+}
+
+.edit{
+    text-align: right;
+}
+
+.edit-icon{
+    cursor: pointer;
+}
+
+.closeedit-icon{
+    cursor: pointer;
+}
+
+.pt-32{
+    padding-top: 32px;
 }

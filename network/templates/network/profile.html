@@ -72,12 +72,19 @@
         </div>
         {% for post in posts %}
             <hr>
-            <div class="box w-100 d-inline-flex p-2 flex-row align-items-center">
-                <div class="infos-post">
-                    <div id="post-logo"><img src={{post.user.img_url}}/></div>
-                </div>
-                <div class="post-content pl-3">
-                    {{post.content}}
+            <div class="box w-100 d-inline-flex flex-column align-items-center">
+                {% if request.user == post.user %}
+                    <div class="edit w-100">
+                        <i class="edit-icon material-icons material-symbols-outlined md-24">edit_note</i> 
+                    </div>
+                {% endif %}
+                <div class="w-100 d-inline-flex p-2 flex-row align-items-center">
+                    <div class="infos-post">
+                        <div id="post-logo"><img src={{post.user.img_url}}/></div>
+                    </div>
+                    <div class="w-100 post-content pl-3">
+                        {{post.content}}
+                    </div>
                 </div>
             </div>
         {% endfor %}
