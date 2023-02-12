@@ -1,4 +1,8 @@
+let openEdit = false;
+let edited = false;
+
 document.addEventListener('DOMContentLoaded', function(){
+    
 
     if (document.querySelector("#show-newpost") != undefined){
         document.querySelector("#show-newpost").style.display = 'none';
@@ -20,8 +24,11 @@ document.addEventListener('DOMContentLoaded', function(){
         
         document.querySelectorAll(".edit-icon").forEach(function(icon){
             icon.onclick = function(e){
-                const element = this.parentElement;
-                editPost(element);
+                const divEdit = this.parentElement;
+                if (openEdit === false){
+                    editPost(divEdit);
+                }
+                
             }
         });
     }
@@ -48,7 +55,7 @@ function sendPost() {
     console.log(content);
 
     if (!content.trim()){
-       console.log('empty');
+        console.log('empty');
     }else{
         fetch('/newpost', {
             method: 'POST',
@@ -115,51 +122,87 @@ function sendPost() {
     
 }
 
-function editPost(element){
-    console.log(element);
+function editPost(divEdit){
+    console.log(divEdit);
     document.querySelector('#show-newpost').style.display = 'none';
     
-    const id = element.parentElement;
-    const div = id.children[1];
-    const content = div.children[1];
-    console.log(id.dataset.id);
-    console.log(content);
+    const divPost = divEdit.parentElement;
+    const divMid = divPost.children[1];
+    const divContent = divMid.children[1];
+    const content = divContent.innerHTML;
+    console.log(divContent);
+    
+
+    divEdit.remove();
+    divContent.remove();
+
+    const divEditClose = document.createElement('div');
+    divEditClose.setAttribute('class','edit w-100');
+    const iconClose = document.createElement('i');
+    iconClose.setAttribute('class','closeedit-icon material-icons material-symbols-outlined md-24');
+    iconClose.setAttribute('id', 'closeedit-icon');
+    iconClose.innerHTML = 'cancel';
+    divEditClose.append(iconClose);
+
+    divPost.insertBefore(divEditClose, divPost.children[0]);
+
     const textarea = document.createElement('textarea');
     textarea.setAttribute('maxlength', 320);
-    textarea.value = content.innerHTML.trim();
-    content.remove();
-    div.append(textarea);
-   
+    textarea.value = content.trim();
+
+    divMid.append(textarea);
+
     divBtn = document.createElement('div');
     divBtn.setAttribute('class', 'w-100 pt-2');
     btn = document.createElement('button');
-    btn.setAttribute('class', 'confirm-edit btn btn-outline-primary');
+    btn.setAttribute('class', 'btn btn-outline-primary');
+    btn.setAttribute('id','confirm-edit');
     btn.innerHTML = 'Confirm';
     divBtn.append(btn);
     divBtn.style.textAlign = 'right';
-    id.append(divBtn);
+    divPost.append(divBtn);
+
+    openEdit = true;
     
-    element.remove();
-    const divClose = document.createElement('div');
-    divClose.setAttribute('class','edit w-100');
-    const iconClose = document.createElement('i');
-    iconClose.setAttribute('class','closeedit-icon material-icons material-symbols-outlined md-24');
-    iconClose.innerHTML = 'cancel';
-    divClose.append(iconClose);
-    id.insertBefore(divClose, id.children[0]);
-    
-    document.querySelectorAll(".closeedit-icon").forEach(function(icon){
-        icon.onclick = function(){
-            const divText = id.children[1];
-            const text = divText.children[1];
-            text.remove();
-            id.children[0].remove();
-            id.children[1].remove();
-            id.insertBefore(element, id.children[0]);
-            id.children[1].append(content);
+    document.addEventListener('click', event =>{
+        const element = event.target;
+        if (element.id ==='closeedit-icon'){
+            divEditClose.remove();
+            textarea.remove();
+            divBtn.remove();
+
+            divPost.insertBefore(divEdit, divPost.children[0]);
+            divMid.append(divContent);
+            openEdit = false;
             
         }
+
     });
+
+    document.querySelector('#confirm-edit').onclick = function(){
+        const editedText = textarea.value;
+        console.log(editedText);
+        
+        //fetch
+
+        divEditClose.remove();
+        textarea.remove();
+        divBtn.remove();
+
+        if (edited === false){
+            const edited = document.createElement('span');
+            edited.innerHTML = 'edited';
+            edited.setAttribute('id', 'edited-content');
+            divEdit.insertBefore(edited, divEdit.children[0]);
+        }
+
+        divPost.insertBefore(divEdit, divPost.children[0]);
+        divContent.innerHTML = editedText;
+        divMid.append(divContent);
+        openEdit = false;
+        edited = true;
+    }
+
     
 }
 
