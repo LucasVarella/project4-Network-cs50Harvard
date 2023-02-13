@@ -1,5 +1,4 @@
 let openEdit = false;
-let edited = false;
 
 document.addEventListener('DOMContentLoaded', function(){
     
@@ -71,6 +70,7 @@ function sendPost() {
 
             const divBox = document.createElement('div');
             divBox.setAttribute('class','box w-100 d-inline-flex flex-column align-items-center');
+            divBox.setAttribute('data-id', result.id);
 
 
                 const divEdit = document.createElement('div');
@@ -78,8 +78,9 @@ function sendPost() {
                 const iconEdit = document.createElement('i');
                 iconEdit.setAttribute('class', 'edit-icon material-icons material-symbols-outlined md-24');
                 iconEdit.innerHTML = 'edit_note';
+                const spanEdit = document.createElement('span');
+                divEdit.append(spanEdit);
                 divEdit.append(iconEdit);
-                divEdit.onclick = editPost;
             divBox.append(divEdit);
 
 
@@ -117,6 +118,16 @@ function sendPost() {
             
             document.querySelector("#allposts-div").append(hr);
             document.querySelector('textarea').value = "";
+
+            
+            iconEdit.onclick = function(e){
+                const divEdit = this.parentElement;
+                if (openEdit === false){
+                    editPost(divEdit);
+                }
+                
+            }
+            
         });
     }  
     
@@ -161,7 +172,6 @@ function editPost(divEdit){
     divBtn.append(btn);
     divBtn.style.textAlign = 'right';
     divPost.append(divBtn);
-
     openEdit = true;
     
     document.addEventListener('click', event =>{
@@ -183,24 +193,32 @@ function editPost(divEdit){
         const editedText = textarea.value;
         console.log(editedText);
         
+        const id = divPost.dataset.id;
         //fetch
+        fetch(`/edit/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                content: editedText
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+
+            console.log(result);
+        });
 
         divEditClose.remove();
         textarea.remove();
         divBtn.remove();
-
-        if (edited === false){
-            const edited = document.createElement('span');
-            edited.innerHTML = 'edited';
-            edited.setAttribute('id', 'edited-content');
-            divEdit.insertBefore(edited, divEdit.children[0]);
-        }
-
+        
+        span = divEdit.children[0];
+        span.innerHTML = 'edited';
+        
         divPost.insertBefore(divEdit, divPost.children[0]);
         divContent.innerHTML = editedText;
         divMid.append(divContent);
         openEdit = false;
-        edited = true;
+        
     }
 
     

@@ -198,9 +198,25 @@ def new_post(request):
     post = Post(user= request.user, content= content)
     post.save()
     user = request.user
-    return JsonResponse({"result": "Posted with success!", "user_img": user.img_url, "user_name": user.username}, status=200)
+    return JsonResponse({"result": "Posted with success!", "user_img": user.img_url, "user_name": user.username, "id": post.id}, status=200)
     
-            
+@login_required
+@csrf_exempt
+def edit_post(request, id):
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+    else:
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        content = body['content']
+        
+        post = Post.objects.get(pk=id)
+        post.edited = True
+        post.content = content
+        post.save()
+        
+        return JsonResponse({"result": "Edited with success!", "edited": post.edited}, status=200)     
+
 @login_required
 def get_user(request):
     

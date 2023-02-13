@@ -15,5 +15,6 @@ urlpatterns = [
      
     # API Routes
     path("newpost", views.new_post, name="newpost"),
+    path("edit/<int:id>", views.edit_post, name="edit"),
     path("getuser", views.get_user, name="getuser"),
 ]

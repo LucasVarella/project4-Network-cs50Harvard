@@ -42,10 +42,25 @@
                 {% if request.user == post.user %}
                     <div data-id={{post.id}} class="box w-100 d-inline-flex flex-column align-items-center">
                         <div class="edit w-100">
+                            {% if post.edited %}
+                                <span>edited</span>
+                            {% else %}
+                                <span></span>
+                            {% endif %}
                             <i class="edit-icon material-icons material-symbols-outlined md-24">edit_note</i> 
                         </div>
                 {% else %}
-                    <div class="box w-100 d-inline-flex flex-column align-items-center pt-32">
+                        {% if post.edited %}
+                            <div class="box w-100 d-inline-flex flex-column align-items-center">
+                                <div class="edit w-100">
+                                    <span>edited</span>
+                                </div>
+                        {% else %}
+                            <div class="box w-100 d-inline-flex flex-column align-items-center pt-32">
+                                <div class="edit w-100">
+                                    <span></span>
+                                </div>
+                        {% endif %}
                 {% endif %}
                 <div class="w-100 d-inline-flex p-2 flex-row align-items-center">
                     <a href="/profile/{{post.user.username}}">
