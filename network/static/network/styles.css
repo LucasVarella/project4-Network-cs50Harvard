@@ -6,6 +6,10 @@ body{
     font-family: 'Inter', sans-serif;
 }
 
+span{
+    font-size: 15px;
+}
+
 h2{
     font-weight: bold;
 }

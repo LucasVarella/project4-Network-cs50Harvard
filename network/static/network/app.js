@@ -38,13 +38,16 @@ document.addEventListener('DOMContentLoaded', function(){
 
 function showNewPost() {
     var x = document.getElementById("show-newpost");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-        document.getElementById("newpost-icon").innerHTML = "cancel";
-    } else {
-        x.style.display = "none";
-        document.getElementById("newpost-icon").innerHTML = "add_circle";
+    if (openEdit === false){
+        if (x.style.display === "none") {
+            x.style.display = "block";
+            document.getElementById("newpost-icon").innerHTML = "cancel";
+        } else {
+            x.style.display = "none";
+            document.getElementById("newpost-icon").innerHTML = "add_circle";
+        }
     }
+    
 }
 
 
@@ -136,13 +139,14 @@ function sendPost() {
 function editPost(divEdit){
     console.log(divEdit);
     document.querySelector('#show-newpost').style.display = 'none';
+    document.querySelector('#newpost-icon').innerHTML = 'add_circle';
     
     const divPost = divEdit.parentElement;
     const divMid = divPost.children[1];
     const divContent = divMid.children[1];
     const content = divContent.innerHTML;
     console.log(divContent);
-    
+    divPost.style.border = '#033649 solid 1px';
 
     divEdit.remove();
     divContent.remove();
@@ -181,6 +185,7 @@ function editPost(divEdit){
             textarea.remove();
             divBtn.remove();
 
+            divPost.style.border = '';
             divPost.insertBefore(divEdit, divPost.children[0]);
             divMid.append(divContent);
             openEdit = false;
@@ -214,6 +219,7 @@ function editPost(divEdit){
         span = divEdit.children[0];
         span.innerHTML = 'edited';
         
+        divPost.style.border = '';
         divPost.insertBefore(divEdit, divPost.children[0]);
         divContent.innerHTML = editedText;
         divMid.append(divContent);
