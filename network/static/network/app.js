@@ -224,7 +224,7 @@ function editPost(divEdit){
         
         divPost.style.border = '';
         divPost.insertBefore(divEdit, divPost.children[0]);
-        divContent.innerHTML = editedText;
+        divContent.children[0].innerHTML = editedText;
         divMid.append(divContent);
         divPost.append(divLike);
         openEdit = false;
