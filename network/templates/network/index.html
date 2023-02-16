@@ -69,9 +69,12 @@
                             <span class="">{{post.user.username}}</span>
                         </div>
                     </a>
-                    <div class="w-100 post-content pl-3">
-                        {{post.content}}
+                    <div class="post-content p-3">
+                        <p>{{post.content}}</p>
                     </div>
+                </div>
+                <div class="edit w-100">
+                    <i class="material-icons material-symbols-outlined md-24">favorite</i>
                 </div>
             </div>
         {% endfor %}

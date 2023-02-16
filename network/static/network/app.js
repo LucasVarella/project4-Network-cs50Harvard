@@ -143,13 +143,15 @@ function editPost(divEdit){
     
     const divPost = divEdit.parentElement;
     const divMid = divPost.children[1];
+    const divLike = divPost.children[2];
     const divContent = divMid.children[1];
-    const content = divContent.innerHTML;
+    const content = divContent.children[0].innerHTML;
     console.log(divContent);
     divPost.style.border = '#033649 solid 1px';
 
     divEdit.remove();
     divContent.remove();
+    divLike.remove();
 
     const divEditClose = document.createElement('div');
     divEditClose.setAttribute('class','edit w-100');
@@ -188,6 +190,7 @@ function editPost(divEdit){
             divPost.style.border = '';
             divPost.insertBefore(divEdit, divPost.children[0]);
             divMid.append(divContent);
+            divPost.append(divLike);
             openEdit = false;
             
         }
@@ -223,6 +226,7 @@ function editPost(divEdit){
         divPost.insertBefore(divEdit, divPost.children[0]);
         divContent.innerHTML = editedText;
         divMid.append(divContent);
+        divPost.append(divLike);
         openEdit = false;
         
     }

@@ -76,8 +76,8 @@ textarea{
 }
 
 #left{
-    min-width: 20%;
-    width: 20%;
+    min-width: 30%;
+    width: 30%;
     height: 100vh;
     /* From https://css.glass */
     /* background: rgba(3, 54, 73, 0.43529411764705883);
@@ -90,15 +90,15 @@ textarea{
 #page{
     display: flex;
     flex-direction: column;
-    width: 60%;
-    min-width: 60%;
+    width: 40%;
+    min-width: 40%;
     height: 100vh;
 
 }
 
 #right{
-    min-width: 20%;
-    width: 20%;
+    min-width: 30%;
+    width: 30%;
     height: 100vh;
     /* From https://css.glass */
     /* background: rgba(3, 54, 73, 0.43529411764705883);
@@ -111,7 +111,7 @@ textarea{
 .box{
     
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    padding: 8px 15px 32px 15px;
+    padding: 8px 15px 8px 15px;
     min-width: 20%;
     border-radius: 8px;
 
@@ -143,6 +143,12 @@ textarea{
     overflow: hidden;
     position: relative;
     border-radius: 50%;
+}
+
+.post-content{
+    word-wrap: break-word;
+    max-width: 85%;
+
 }
 
 #post-logo img{
@@ -179,6 +185,7 @@ textarea{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    user-select:none;
 }
 
 .material-icons.md-36 { font-size: 24px; }
@@ -202,6 +209,7 @@ textarea{
 
 .edit{
     text-align: right;
+    user-select:none;
 }
 
 .edit-icon{
