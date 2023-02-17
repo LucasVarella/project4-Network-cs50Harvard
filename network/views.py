@@ -107,15 +107,20 @@ def foryou(request):
         
         config = request.user.posts_config
         posts = Post.objects.all
+        liked_posts = Like.objects.filter(user= request.user)
+        liked_ids = []
+
+        for like in liked_posts:
+            liked_ids.append(like.post.id)
         
         if config == 0:
             return render(request, "network/index.html", {
-                "posts": posts
+                "posts": posts, "liked_ids": liked_ids
             })
             
         else:
             return render(request, "network/index.html", {
-                "posts": posts
+                "posts": posts, "liked_ids": liked_ids
             })
         
     else:
@@ -215,8 +220,32 @@ def edit_post(request, id):
         post.content = content
         post.save()
         
-        return JsonResponse({"result": "Edited with success!", "edited": post.edited}, status=200)     
+        return JsonResponse({"result": "Edited with success!", "edited": post.edited}, status=200)  
 
+@login_required
+@csrf_exempt
+def like_post(request, id):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    else:
+        post = Post.objects.get(pk=id)
+        try:
+            like = Like.objects.get(post=post, user= request.user)
+            liked = True
+        except:
+            liked = False
+        
+        if liked == True:
+            like.delete()
+            liked = False
+            
+        else:
+            like = Like(post=post, user= request.user)
+            like.save()
+            liked = True
+            
+        return JsonResponse({"liked": liked}, status=200)
+      
 @login_required
 def get_user(request):
     

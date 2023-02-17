@@ -212,6 +212,11 @@ textarea{
     user-select:none;
 }
 
+.like{
+    text-align: right;
+    user-select:none;
+}
+
 .edit-icon{
     cursor: pointer;
 }

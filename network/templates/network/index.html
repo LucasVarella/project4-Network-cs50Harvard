@@ -51,12 +51,12 @@
                         </div>
                 {% else %}
                         {% if post.edited %}
-                            <div class="box w-100 d-inline-flex flex-column align-items-center">
+                            <div data-id={{post.id}} class="box w-100 d-inline-flex flex-column align-items-center">
                                 <div class="edit w-100">
                                     <span>edited</span>
                                 </div>
                         {% else %}
-                            <div class="box w-100 d-inline-flex flex-column align-items-center pt-32">
+                            <div data-id={{post.id}} class="box w-100 d-inline-flex flex-column align-items-center pt-32">
                                 <div class="edit w-100">
                                     <span></span>
                                 </div>
@@ -73,8 +73,12 @@
                         <p>{{post.content}}</p>
                     </div>
                 </div>
-                <div class="edit w-100">
-                    <i class="material-icons material-symbols-outlined md-24">favorite</i>
+                <div class="like w-100">
+                    {% if post.id in liked_ids %}
+                        <i class="like-icon material-icons material-symbols md-24">favorite</i>
+                    {% else %}
+                        <i class="like-icon material-icons material-symbols-outlined md-24">favorite</i>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}

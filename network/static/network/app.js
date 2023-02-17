@@ -32,6 +32,15 @@ document.addEventListener('DOMContentLoaded', function(){
         });
     }
 
+    document.addEventListener('click', event =>{
+        const element = event.target;
+        if (element.className.includes('like-icon')){
+            like(element);
+            
+        }
+
+    });
+
 
 });
 
@@ -263,3 +272,22 @@ function followUser() {
         }       
 }
 
+function like(element){
+    const post_id = element.parentElement.parentElement.dataset.id;
+    console.log(post_id);
+
+    fetch(`/like/${post_id}`, {
+        method: 'POST',
+        body: JSON.stringify({
+
+        })
+        })
+        .then(response => response.json())
+        .then(result => {
+        console.log(result);
+        
+        });
+
+       
+        
+}
