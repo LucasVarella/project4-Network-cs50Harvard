@@ -225,6 +225,9 @@ textarea{
     flex-direction: row;
     justify-content: right;
     align-items: center;
+}
+
+.like i{
     cursor: pointer;
 }
 

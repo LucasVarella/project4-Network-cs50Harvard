@@ -110,7 +110,6 @@ def foryou(request):
         qtd_likes = {}
         
         for post in posts:
-         # qtd_likes.append({f"{post.id}": len(Like.objects.filter(post=post))})  
             qtd_likes[f"{post.id}"] = len(Like.objects.filter(post = post))
         
         liked_posts = Like.objects.filter(user= request.user)
@@ -141,7 +140,6 @@ def following(request):
     if user.is_authenticated:
         
         if request.method == "POST":
-            
             
             
             body_unicode = request.body.decode('utf-8')
@@ -182,14 +180,25 @@ def following(request):
                 for post in posts_user:
                     posts.append(post)
             
+            qtd_likes = {}
+        
+            for post in posts: 
+                qtd_likes[f"{post.id}"] = len(Like.objects.filter(post = post))
+            
+            liked_posts = Like.objects.filter(user= request.user)
+            liked_ids = []
+
+            for like in liked_posts:
+                liked_ids.append(like.post.id)
+            
             if config == 0:
                 return render(request, "network/index.html", {
-                    "posts": posts
+                    "posts": posts, "liked_ids": liked_ids, "qtd_likes": qtd_likes
                 })
                 
             else:
                 return render(request, "network/index.html", {
-                    "posts": posts
+                    "posts": posts, "liked_ids": liked_ids, "qtd_likes": qtd_likes
                 })
     else:
         return HttpResponseRedirect(reverse("login"))
