@@ -84,7 +84,6 @@ function sendPost() {
             divBox.setAttribute('class','box w-100 d-inline-flex flex-column align-items-center');
             divBox.setAttribute('data-id', result.id);
 
-
                 const divEdit = document.createElement('div');
                 divEdit.setAttribute('class', 'edit w-100');
                 const iconEdit = document.createElement('i');
@@ -94,7 +93,6 @@ function sendPost() {
                 divEdit.append(spanEdit);
                 divEdit.append(iconEdit);
             divBox.append(divEdit);
-
 
                 const divPost = document.createElement('div');
                 divPost.setAttribute('class', 'w-100 d-inline-flex p-2 flex-row align-items-center')
@@ -122,15 +120,29 @@ function sendPost() {
                 
                     const divContent = document.createElement('div');
                     divContent.setAttribute('class', 'post-content pl-3');
-                    divContent.innerHTML = content;
+                    const p = document.createElement('p')
+                    p.innerHTML = content
+                    divContent.append(p);
                 divPost.append(divContent);
             
             divBox.append(divPost);
+
+            const divLike = document.createElement('div');
+            divLike.setAttribute('class', 'like w-100');
+            const spanQtdLikes = document.createElement('span');
+            spanQtdLikes.setAttribute('class', 'qtd_likes');
+            const iFavorite = document.createElement('i');
+            iFavorite.setAttribute('class', 'like-icon material-icons material-symbols-outlined md-24');
+            iFavorite.innerHTML = "favorite"
+            divLike.append(spanQtdLikes);
+            divLike.append(iFavorite);
+
+            divBox.append(divLike);
+
             document.querySelector("#allposts-div").append(divBox);
             
             document.querySelector("#allposts-div").append(hr);
             document.querySelector('textarea').value = "";
-
             
             iconEdit.onclick = function(e){
                 const divEdit = this.parentElement;
@@ -239,7 +251,6 @@ function editPost(divEdit){
         openEdit = false;
         
     }
-
     
 }
 
@@ -285,9 +296,21 @@ function like(element){
         .then(response => response.json())
         .then(result => {
         console.log(result);
-        
+            let qtd_likes = result.qtd_likes
+            if (qtd_likes > 0){
+                element.parentElement.children[0].innerHTML = qtd_likes
+            }else{
+                element.parentElement.children[0].innerHTML = ""
+            }
+
         });
 
-       
+    if (element.className.includes('material-symbols-outlined')){
+        element.setAttribute('class', 'like-icon material-icons material-symbols md-24')
+        
+    }else{
+
+        element.setAttribute('class', 'like-icon material-icons material-symbols-outlined md-24')
+    }
         
 }

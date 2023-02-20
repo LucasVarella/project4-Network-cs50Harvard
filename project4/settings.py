@@ -68,6 +68,8 @@ TEMPLATES = [
     },
 ]
 
+
+
 WSGI_APPLICATION = 'project4.wsgi.application'
 
 

@@ -1,4 +1,5 @@
 {% extends "network/layout.html" %}
+{% load custom_tags %}
 
 {% block head %}
 
@@ -20,7 +21,7 @@
     <div id="show-newpost" class="box mt-2">
             <div class="w-100">
                 <form method="POST" action="">
-                    <div class="post-content">
+                    <div class="content-post">
                         <input hidden type="text" value={{csrf_token}} name="csrf_token" id="csrf_token">
                         <textarea maxlength="320" id="content-post" placeholder="Describe yourself here..." required></textarea>
                     </div>
@@ -30,7 +31,7 @@
                 </form>
             </div>
     </div>
-
+ 
     <div id="allposts-div" class="d-inline-flex flex-column-reverse w-100">
         <div class="box w-100" style="background-color: #033649 ; color: white">
             <div style="text-align: center;">
@@ -74,6 +75,11 @@
                     </div>
                 </div>
                 <div class="like w-100">
+                    <span class="qtd_likes">
+                        {% if qtd_likes|get_item:post.id > 0 %}
+                            {{qtd_likes|get_item:post.id}}
+                        {% endif %}
+                    </span>
                     {% if post.id in liked_ids %}
                         <i class="like-icon material-icons material-symbols md-24">favorite</i>
                     {% else %}

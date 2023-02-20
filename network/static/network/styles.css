@@ -151,6 +151,12 @@ textarea{
 
 }
 
+.content-post{
+    word-wrap: break-word;
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
 #post-logo img{
     position: absolute;
     width: 100%;
@@ -215,6 +221,16 @@ textarea{
 .like{
     text-align: right;
     user-select:none;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    cursor: pointer;
+}
+
+.qtd_likes{
+    font-size: 18px;
+    padding-right: 5px;
 }
 
 .edit-icon{
@@ -228,3 +244,4 @@ textarea{
 .pt-32{
     padding-top: 32px;
 }
+

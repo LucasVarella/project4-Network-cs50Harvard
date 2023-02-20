@@ -106,21 +106,28 @@ def foryou(request):
     if request.user.is_authenticated:
         
         config = request.user.posts_config
-        posts = Post.objects.all
+        posts = Post.objects.all()
+        qtd_likes = {}
+        
+        for post in posts:
+         # qtd_likes.append({f"{post.id}": len(Like.objects.filter(post=post))})  
+            qtd_likes[f"{post.id}"] = len(Like.objects.filter(post = post))
+        
         liked_posts = Like.objects.filter(user= request.user)
         liked_ids = []
 
         for like in liked_posts:
             liked_ids.append(like.post.id)
+            
         
         if config == 0:
             return render(request, "network/index.html", {
-                "posts": posts, "liked_ids": liked_ids
+                "posts": posts, "liked_ids": liked_ids, "qtd_likes": qtd_likes
             })
             
         else:
             return render(request, "network/index.html", {
-                "posts": posts, "liked_ids": liked_ids
+                "posts": posts, "liked_ids": liked_ids, "qtd_likes": qtd_likes
             })
         
     else:
@@ -227,8 +234,10 @@ def edit_post(request, id):
 def like_post(request, id):
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
+    
     else:
         post = Post.objects.get(pk=id)
+        qtd_likes = Like.objects.filter(post= post)
         try:
             like = Like.objects.get(post=post, user= request.user)
             liked = True
@@ -244,7 +253,7 @@ def like_post(request, id):
             like.save()
             liked = True
             
-        return JsonResponse({"liked": liked}, status=200)
+        return JsonResponse({"liked": liked, "qtd_likes": len(qtd_likes)}, status=200)
       
 @login_required
 def get_user(request):
