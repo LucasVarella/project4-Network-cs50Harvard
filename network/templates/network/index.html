@@ -11,7 +11,7 @@
     </div> -->
 
     {% if this_page == "foryou" %}
-    <div class="box w-25 click-newpost">
+    <div class="box w-100 click-newpost">
         <div id="show-newpost-btn">
             <i id="newpost-icon" class="material-icons material-symbols-outlined md-36">add_circle</i> <span class="pl-2">New post</span> 
           </div>
@@ -84,15 +84,23 @@
                     {% endif %}
                 </div>
             </div>
+        {% empty %}
+            <div style="text-align: center; color: gray; padding: 25px;">
+                Not yet
+            </div>
         {% endfor %}
-        <div class="page-links">
-            {% if page.has_previous %}
-                <a href="/{{this_page}}?page={{page.previous_page_number}}">Previous</a>
-            {% endif %}
-            {% if page.has_next %}
-                <a href="/{{this_page}}?page={{page.next_page_number}}">Next</a>
-            {% endif %}
-        </div>
+        
+
+        {% if page.has_previous or page.has_next %}
+            <div class="page-links d-inline-flex flex-row justify-content-between box mt-3">
+                {% if page.has_previous %}
+                    <a href="/{{this_page}}?page={{page.previous_page_number}}" class="m-2">Previous</a>
+                {% endif %}
+                {% if page.has_next %}
+                    <a href="/{{this_page}}?page={{page.next_page_number}}" class="m-2">Next</a>
+                {% endif %}
+            </div>
+        {% endif %}
         <hr>
     </div>
     

@@ -63,7 +63,6 @@ function showNewPost() {
 function sendPost() {
 
     const content = document.querySelector("#content-post").value;
-    console.log(content);
 
     if (!content.trim()){
         console.log('empty');
@@ -76,7 +75,6 @@ function sendPost() {
         })
         .then(response => response.json())
         .then(result => {
-            console.log(result);
             const hr = document.createElement('hr');
             document.querySelector("#allposts-div").append(hr);
 
@@ -158,7 +156,6 @@ function sendPost() {
 }
 
 function editPost(divEdit){
-    console.log(divEdit);
 
     if ( document.querySelector('#show-newpost') != undefined){
         document.querySelector('#show-newpost').style.display = 'none';
@@ -170,7 +167,6 @@ function editPost(divEdit){
     const divLike = divPost.children[2];
     const divContent = divMid.children[1];
     const content = divContent.children[0].innerHTML;
-    console.log(divContent);
     divPost.style.border = '#033649 solid 1px';
 
     divEdit.remove();
@@ -223,7 +219,6 @@ function editPost(divEdit){
 
     document.querySelector('#confirm-edit').onclick = function(){
         const editedText = textarea.value;
-        console.log(editedText);
         
         const id = divPost.dataset.id;
         //fetch
@@ -236,7 +231,6 @@ function editPost(divEdit){
         .then(response => response.json())
         .then(result => {
 
-            console.log(result);
         });
 
         divEditClose.remove();
@@ -268,7 +262,6 @@ function followUser() {
         })
         .then(response => response.json())
         .then(result => {
-        console.log(result);
         document.querySelector("#span-followers").innerHTML = result["qtd_followers"];
         });
 
@@ -288,7 +281,6 @@ function followUser() {
 
 function like(element){
     const post_id = element.parentElement.parentElement.dataset.id;
-    console.log(post_id);
 
     fetch(`/like/${post_id}`, {
         method: 'POST',
@@ -298,7 +290,6 @@ function like(element){
         })
         .then(response => response.json())
         .then(result => {
-        console.log(result);
             let qtd_likes = result.qtd_likes
             if (qtd_likes > 0){
                 element.parentElement.children[0].innerHTML = qtd_likes
