@@ -41,7 +41,7 @@
             <div class="w-100">
                 <form method="POST" action="">
                     <input hidden value="{{csrf_token}}">
-                    <div class="post-content">
+                    <div class="content-post">
                         <input hidden type="text" value={{csrf_token}} name="csrf_token" id="csrf_token">
                         <textarea maxlength="320" id="content-post" placeholder="Describe yourself here..." required></textarea>
                     </div>
@@ -64,30 +64,65 @@
     </div>
     
     <!----- PROFILE POSTS ------> 
-    <div id="allposts-div" class="d-inline-flex flex-column-reverse w-100">
-        <div class="box w-100" style="background-color: #033649 ; color: white">
-            <div style="text-align: center;">
-                This is all!
-            </div> 
-        </div>
-        {% for post in posts %}
+    <div id="allposts-div" class="d-inline-flex flex-column w-100">
+        {% for post in page.object_list %}
             <hr>
-            <div class="box w-100 d-inline-flex flex-column align-items-center">
                 {% if request.user == post.user %}
-                    <div class="edit w-100">
-                        <i class="edit-icon material-icons material-symbols-outlined md-24">edit_note</i> 
-                    </div>
+                    <div data-id={{post.id}} class="box w-100 d-inline-flex flex-column align-items-center">
+                        <div class="edit w-100">
+                            {% if post.edited %}
+                                <span>edited</span>
+                            {% else %}
+                                <span></span>
+                            {% endif %}
+                            <i class="edit-icon material-icons material-symbols-outlined md-24">edit_note</i> 
+                        </div>
+                {% else %}
+                        {% if post.edited %}
+                            <div data-id={{post.id}} class="box w-100 d-inline-flex flex-column align-items-center">
+                                <div class="edit w-100">
+                                    <span>edited</span>
+                                </div>
+                        {% else %}
+                            <div data-id={{post.id}} class="box w-100 d-inline-flex flex-column align-items-center pt-32">
+                                <div class="edit w-100">
+                                    <span></span>
+                                </div>
+                        {% endif %}
                 {% endif %}
                 <div class="w-100 d-inline-flex p-2 flex-row align-items-center">
-                    <div class="infos-post">
-                        <div id="post-logo"><img src={{post.user.img_url}}/></div>
+                    <a href="/profile/{{post.user.username}}">
+                        <div class="infos-post">
+                            <div id="post-logo"><img src={{post.user.img_url}}/></div>
+                            <span class="">{{post.user.username}}</span>
+                        </div>
+                    </a>
+                    <div class="post-content p-3">
+                        <p>{{post.content}}</p>
                     </div>
-                    <div class="w-100 post-content pl-3">
-                        {{post.content}}
-                    </div>
+                </div>
+                <div class="like w-100">
+                    <span class="qtd_likes">
+                        {% if qtd_likes|get_item:post.id > 0 %}
+                            {{qtd_likes|get_item:post.id}}
+                        {% endif %}
+                    </span>
+                    {% if post.id in liked_ids %}
+                        <i class="like-icon material-icons material-symbols md-24">favorite</i>
+                    {% else %}
+                        <i class="like-icon material-icons material-symbols-outlined md-24">favorite</i>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
+        <div class="page-links">
+            {% if page.has_previous %}
+                <a href="/profile/{{user}}?page={{page.previous_page_number}}">Previous</a>
+            {% endif %}
+            {% if page.has_next %}
+                <a href="/profile/{{user}}?page={{page.next_page_number}}">Next</a>
+            {% endif %}
+        </div>
         <hr>
     </div>
     

@@ -10,6 +10,7 @@
         <button>Change</button>
     </div> -->
 
+    {% if this_page == "foryou" %}
     <div class="box w-25 click-newpost">
         <div id="show-newpost-btn">
             <i id="newpost-icon" class="material-icons material-symbols-outlined md-36">add_circle</i> <span class="pl-2">New post</span> 
@@ -18,27 +19,23 @@
 
     <!-- <button id="show-newpost-btn" class="btn btn-primary w-25">Add new post</button> -->
 
-    <div id="show-newpost" class="box mt-2">
-            <div class="w-100">
-                <form method="POST" action="">
-                    <div class="content-post">
-                        <input hidden type="text" value={{csrf_token}} name="csrf_token" id="csrf_token">
-                        <textarea maxlength="320" id="content-post" placeholder="Describe yourself here..." required></textarea>
-                    </div>
-                    <div style="text-align: right;" class="pt-2">
-                        <button id="send-post" class="btn btn-outline-primary">Send</button>
-                    </div>
-                </form>
-            </div>
-    </div>
- 
-    <div id="allposts-div" class="d-inline-flex flex-column-reverse w-100">
-        <div class="box w-100" style="background-color: #033649 ; color: white">
-            <div style="text-align: center;">
-                This is all!
-            </div> 
+        <div id="show-newpost" class="box mt-2">
+                <div class="w-100">
+                    <form method="POST" action="">
+                        <div class="content-post">
+                            <input hidden type="text" value={{csrf_token}} name="csrf_token" id="csrf_token">
+                            <textarea maxlength="320" id="content-post" placeholder="Describe yourself here..." required></textarea>
+                        </div>
+                        <div style="text-align: right;" class="pt-2">
+                            <button id="send-post" class="btn btn-outline-primary">Send</button>
+                        </div>
+                    </form>
+                </div>
         </div>
-        {% for post in posts %}
+    {% endif %}
+    
+    <div id="allposts-div" class="d-inline-flex flex-column w-100">
+        {% for post in page.object_list %}
             <hr>
                 {% if request.user == post.user %}
                     <div data-id={{post.id}} class="box w-100 d-inline-flex flex-column align-items-center">
@@ -88,6 +85,14 @@
                 </div>
             </div>
         {% endfor %}
+        <div class="page-links">
+            {% if page.has_previous %}
+                <a href="/{{this_page}}?page={{page.previous_page_number}}">Previous</a>
+            {% endif %}
+            {% if page.has_next %}
+                <a href="/{{this_page}}?page={{page.next_page_number}}">Next</a>
+            {% endif %}
+        </div>
         <hr>
     </div>
     

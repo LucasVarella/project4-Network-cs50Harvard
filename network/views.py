@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 from datetime import datetime
 
@@ -74,12 +75,29 @@ def register(request):
         return render(request, "network/register.html")
 
 def my_profile(request):
-    
+            
     user = request.user
     if user.is_authenticated:
         my_posts = Post.objects.filter(user= user)
+        
+        my_posts_paginator = Paginator(list(reversed(my_posts)),10)
+        page_num = request.GET.get('page')
+        page = my_posts_paginator.get_page(page_num)
+        
+        qtd_posts = len(my_posts)
+        qtd_likes = {}
+        
+        for post in my_posts: 
+            qtd_likes[f"{post.id}"] = len(Like.objects.filter(post = post))
+    
+        liked_posts = Like.objects.filter(user= request.user)
+        liked_ids = []
+
+        for like in liked_posts:
+            liked_ids.append(like.post.id)
+        
         return render(request, "network/profile.html", {
-            "user": user, "posts": my_posts
+            "user": user, "page": page, "liked_ids": liked_ids, "qtd_likes": qtd_likes, "qtd_posts": qtd_posts
         })
     else:
         return HttpResponseRedirect(reverse("login"))
@@ -89,9 +107,23 @@ def profile(request, user):
     
     user_profile = User.objects.get(username=user)
     posts = Post.objects.filter(user= user_profile)
-    qtd_posts = 0
+    qtd_posts = len(posts)
    
+    posts_paginator = Paginator(list(reversed(posts)),10)
+    page_num = request.GET.get('page')
+    page = posts_paginator.get_page(page_num)
+        
+    qtd_likes = {}
+        
+    for post in posts: 
+        qtd_likes[f"{post.id}"] = len(Like.objects.filter(post = post))
     
+    liked_posts = Like.objects.filter(user= request.user)
+    liked_ids = []
+
+    for like in liked_posts:
+        liked_ids.append(like.post.id)
+            
     following = True
     try:
         follow = Follow.objects.get(user = request.user, following= user_profile.id)
@@ -99,7 +131,7 @@ def profile(request, user):
         following = False
         
     return render(request, "network/profile.html", {
-        "user": user_profile, "posts": posts, "following": following, "qtd_posts": qtd_posts
+        "user": user_profile, "page": page, "following": following, "qtd_posts": qtd_posts, "liked_ids": liked_ids, "qtd_likes": qtd_likes
     })
 
 def foryou(request):
@@ -107,6 +139,11 @@ def foryou(request):
         
         config = request.user.posts_config
         posts = Post.objects.all()
+        
+        posts_paginator = Paginator(list(reversed(posts)),10)
+        page_num = request.GET.get('page')
+        page = posts_paginator.get_page(page_num)
+    
         qtd_likes = {}
         
         for post in posts:
@@ -121,12 +158,12 @@ def foryou(request):
         
         if config == 0:
             return render(request, "network/index.html", {
-                "posts": posts, "liked_ids": liked_ids, "qtd_likes": qtd_likes
+                "page": page, "liked_ids": liked_ids, "qtd_likes": qtd_likes, "this_page": "foryou"
             })
             
         else:
             return render(request, "network/index.html", {
-                "posts": posts, "liked_ids": liked_ids, "qtd_likes": qtd_likes
+                "page": page, "liked_ids": liked_ids, "qtd_likes": qtd_likes, "this_page": "foryou"
             })
         
     else:
@@ -158,6 +195,9 @@ def following(request):
                 profile_user.qtd_followers -=1
                 profile_user.save()
                 qtd_followers = profile_user.qtd_followers
+                
+                user.qtd_following -=1
+                user.save()
                 return JsonResponse({"result": "Sucess unfollowed user", "qtd_followers": qtd_followers}, status=200)
             else:        
                 add_follow = Follow(user= user, following=id_profile)
@@ -165,6 +205,9 @@ def following(request):
                 profile_user.qtd_followers +=1
                 profile_user.save()
                 qtd_followers = profile_user.qtd_followers
+                
+                user.qtd_following +=1
+                user.save()
                 return JsonResponse({"result": "Sucess followed user", "qtd_followers": qtd_followers}, status=200)
         
         else:
@@ -180,6 +223,9 @@ def following(request):
                 for post in posts_user:
                     posts.append(post)
             
+            posts_paginator = Paginator(list(reversed(posts)),10)
+            page_num = request.GET.get('page')
+            page = posts_paginator.get_page(page_num)
             qtd_likes = {}
         
             for post in posts: 
@@ -193,12 +239,12 @@ def following(request):
             
             if config == 0:
                 return render(request, "network/index.html", {
-                    "posts": posts, "liked_ids": liked_ids, "qtd_likes": qtd_likes
+                    "page": page, "liked_ids": liked_ids, "qtd_likes": qtd_likes, "this_page": "following"
                 })
                 
             else:
                 return render(request, "network/index.html", {
-                    "posts": posts, "liked_ids": liked_ids, "qtd_likes": qtd_likes
+                    "page": page, "liked_ids": liked_ids, "qtd_likes": qtd_likes, "this_page": "following"
                 })
     else:
         return HttpResponseRedirect(reverse("login"))

@@ -139,9 +139,9 @@ function sendPost() {
 
             divBox.append(divLike);
 
-            document.querySelector("#allposts-div").append(divBox);
+            document.querySelector("#allposts-div").insertBefore(divBox, document.querySelector("#allposts-div").children[0]);
             
-            document.querySelector("#allposts-div").append(hr);
+            document.querySelector("#allposts-div").insertBefore(hr, document.querySelector("#allposts-div").children[0]);
             document.querySelector('textarea').value = "";
             
             iconEdit.onclick = function(e){
@@ -159,8 +159,11 @@ function sendPost() {
 
 function editPost(divEdit){
     console.log(divEdit);
-    document.querySelector('#show-newpost').style.display = 'none';
-    document.querySelector('#newpost-icon').innerHTML = 'add_circle';
+
+    if ( document.querySelector('#show-newpost') != undefined){
+        document.querySelector('#show-newpost').style.display = 'none';
+        document.querySelector('#newpost-icon').innerHTML = 'add_circle';
+    }
     
     const divPost = divEdit.parentElement;
     const divMid = divPost.children[1];
