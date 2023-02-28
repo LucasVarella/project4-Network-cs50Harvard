@@ -261,11 +261,11 @@ def new_post(request):
     body = json.loads(body_unicode)
     content = body['content']
 
-    
-    post = Post(user= request.user, content= content)
+    date_post = str(datetime.now())[:16]
+    post = Post(user= request.user, content= content, date_time= date_post)
     post.save()
     user = request.user
-    return JsonResponse({"result": "Posted with success!", "user_img": user.img_url, "user_name": user.username, "id": post.id}, status=200)
+    return JsonResponse({"result": "Posted with success!", "user_img": user.img_url, "user_name": user.username, "id": post.id, "date_time": date_post}, status=200)
     
 @login_required
 @csrf_exempt

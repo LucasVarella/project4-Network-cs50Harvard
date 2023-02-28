@@ -83,9 +83,11 @@
                         <i class="like-icon material-icons material-symbols-outlined md-24">favorite</i>
                     {% endif %}
                 </div>
+                <span class="date-time">{{post.date_time}}</span>
             </div>
+        
         {% empty %}
-            <div style="text-align: center; color: gray; padding: 25px;">
+            <div class="not-yet">
                 Not yet
             </div>
         {% endfor %}

@@ -75,6 +75,7 @@ function sendPost() {
         })
         .then(response => response.json())
         .then(result => {
+            document.querySelector('.not-yet').remove();
             const hr = document.createElement('hr');
             document.querySelector("#allposts-div").append(hr);
 
@@ -137,6 +138,14 @@ function sendPost() {
 
             divBox.append(divLike);
 
+            const divDate = document.createElement('span');
+            divDate.setAttribute('class', 'date-time');
+            divDate.innerHTML = result.date_time;
+            divBox.append(divDate);
+            date_time = document.createElement('span');
+            date_time.setAttribute('class', 'date-time')
+            date_time.innerHTML = result.date_time;
+
             document.querySelector("#allposts-div").insertBefore(divBox, document.querySelector("#allposts-div").children[0]);
             
             document.querySelector("#allposts-div").insertBefore(hr, document.querySelector("#allposts-div").children[0]);
@@ -167,10 +176,12 @@ function editPost(divEdit){
     const divLike = divPost.children[2];
     const divContent = divMid.children[1];
     const content = divContent.children[0].innerHTML;
+    const divDate = divPost.children[3];
     divPost.style.border = '#033649 solid 1px';
 
     divEdit.remove();
     divContent.remove();
+    divDate.remove();
     divLike.remove();
 
     const divEditClose = document.createElement('div');
@@ -197,7 +208,7 @@ function editPost(divEdit){
     btn.innerHTML = 'Confirm';
     divBtn.append(btn);
     divBtn.style.textAlign = 'right';
-    divPost.append(divBtn);
+    divPost.append(divBtn)
     openEdit = true;
     
     document.addEventListener('click', event =>{
@@ -211,6 +222,7 @@ function editPost(divEdit){
             divPost.insertBefore(divEdit, divPost.children[0]);
             divMid.append(divContent);
             divPost.append(divLike);
+            divPost.append(divDate);
             openEdit = false;
             
         }
@@ -245,6 +257,7 @@ function editPost(divEdit){
         divContent.children[0].innerHTML = editedText;
         divMid.append(divContent);
         divPost.append(divLike);
+        divPost.append(divDate);
         openEdit = false;
         
     }

@@ -239,7 +239,7 @@ textarea{
 }
 
 .qtd_likes{
-    font-size: 18px;
+    font-size: 16px;
     padding-right: 5px;
 }
 
@@ -255,3 +255,14 @@ textarea{
     padding-top: 32px;
 }
 
+.date-time{
+    font-size: 12px;
+    color: gray;
+    
+}
+
+.not-yet{
+    text-align: center;
+    color: gray;
+    padding: 25px;
+}
