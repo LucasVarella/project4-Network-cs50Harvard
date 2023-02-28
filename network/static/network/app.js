@@ -75,7 +75,9 @@ function sendPost() {
         })
         .then(response => response.json())
         .then(result => {
-            document.querySelector('.not-yet').remove();
+            if( document.querySelector('.not-yet') != undefined){
+                document.querySelector('.not-yet').remove();
+            }
             const hr = document.createElement('hr');
             document.querySelector("#allposts-div").append(hr);
 
