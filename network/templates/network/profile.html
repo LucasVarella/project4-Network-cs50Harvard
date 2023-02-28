@@ -120,14 +120,16 @@
                 Not yet
             </div>
         {% endfor %}
-        <div class="page-links">
-            {% if page.has_previous %}
-                <a href="/profile/{{user}}?page={{page.previous_page_number}}">Previous</a>
-            {% endif %}
-            {% if page.has_next %}
-                <a href="/profile/{{user}}?page={{page.next_page_number}}">Next</a>
-            {% endif %}
-        </div>
+        {% if page.has_previous or page.has_next %}
+            <div class="page-links d-inline-flex flex-row justify-content-between box mt-3">
+                {% if page.has_previous %}
+                    <a href="/profile/{{user}}?page={{page.previous_page_number}}" class="m-2">Previous</a>
+                {% endif %}
+                {% if page.has_next %}
+                    <a href="/profile/{{user}}?page={{page.next_page_number}}" class="m-2">Next</a>
+                {% endif %}
+            </div>
+        {% endif %}
         <hr>
     </div>
     
